@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' file:; style-src 'self' file:; img-src 'self' file:; base-uri 'none'; form-action 'none'">
+  <title>지역 주유정보</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="map/regions.js" defer></script>
+  <script src="data.js" defer></script>
+  <script src="map.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="#home"><span class="brand-mark" aria-hidden="true">◆</span> 지역 주유정보</a>
+      <span class="offline">오프라인 사용 가능</span>
+    </div>
+  </header>
+  <main class="shell">
+    <section id="home">
+      <div class="hero">
+        <h1>우리 지역 주유소와<br>가격을 한곳에서</h1>
+        <p>주유소와 판매가격 CSV를 올려 지역 자료를 추출하거나 지도에서 날짜별 가격을 확인하세요.</p>
+      </div>
+      <nav class="menu" aria-label="메인 메뉴">
+        <a class="menu-card" href="#extract">
+          <span class="menu-icon" aria-hidden="true">▤</span>
+          <h2>지역별 CSV 추출</h2>
+          <p>시도와 시군구를 선택해 주유소 목록과 일별 가격을 각각 저장합니다.</p>
+          <strong>자료 추출 열기</strong>
+        </a>
+        <a class="menu-card" href="#lookup">
+          <span class="menu-icon map-icon" aria-hidden="true">◈</span>
+          <h2>지도에서 주유소·가격 조회</h2>
+          <p>지도에서 주유소를 선택하고 유종별 가격과 지난 기록을 확인합니다.</p>
+          <strong>지도 조회 열기</strong>
+        </a>
+      </nav>
+    </section>
+
+    <section id="workspace" hidden>
+      <a class="back" href="#home">메인으로 돌아가기</a>
+      <h1 id="screen-title" tabindex="-1"></h1>
+      <div class="panel controls">
+        <div class="uploads">
+          <label>주유소 표준 CSV<input id="stations" type="file" accept=".csv,text/csv"></label>
+          <label>일별 판매가격 CSV<input id="prices" type="file" accept=".csv,text/csv"></label>
+        </div>
+        <p class="message" id="file-status" role="status"></p>
+        <div class="regions">
+          <label>시도<select id="province"><option value="">시도 선택</option></select></label>
+          <label>시군구<select id="district" disabled><option value="">시도 전체</option></select></label>
+        </div>
+      </div>
+      <section class="panel export" id="extract-view" hidden aria-label="추출 결과">
+        <p id="extract-summary" role="status"></p>
+        <div class="export-controls">
+          <label>저장 인코딩<select id="encoding"><option value="utf8">UTF-8 BOM</option><option value="cp949">CP949</option></select></label>
+          <button id="download-stations" disabled>주유소 CSV 저장</button>
+          <button id="download-prices" disabled>가격 CSV 저장</button>
+        </div>
+        <p class="message" id="download-status" role="status"></p>
+      </section>
+      <section id="lookup-view" hidden aria-label="지도 및 가격 결과">
+        <p id="map-status" class="map-status" role="status"></p>
+        <div class="map-layout">
+          <div class="panel map-panel">
+            <canvas id="map" tabindex="0" aria-label="주유소 지도. 방향키로 이동하고 더하기와 빼기 키로 확대 또는 축소합니다. 지도 옆 목록에서도 주유소를 선택할 수 있습니다."></canvas>
+            <div class="map-controls" aria-label="지도 조작">
+              <button type="button" id="zoom-in" aria-label="확대">+</button>
+              <button type="button" id="zoom-out" aria-label="축소">−</button>
+              <button type="button" id="map-reset" aria-label="선택 지역에 맞춤">⌖</button>
+            </div>
+          </div>
+          <div class="panel results">
+            <section class="station-detail" id="station-detail" aria-label="선택한 주유소 가격">
+              <p>지도나 목록에서 주유소를 선택하세요.</p>
+            </section>
+            <section class="station-list" aria-label="지역 주유소 목록">
+              <label>주유소 목록<input id="station-search" type="search" placeholder="상호 또는 주소 검색" disabled></label>
+              <ul id="station-list"></ul>
+            </section>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+</body>
+</html>
